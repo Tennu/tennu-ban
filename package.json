@@ -1,0 +1,26 @@
+{
+  "name": "tennu-ban",
+  "version": "1.0.0",
+  "description": "Plugin for the Tennu IRC Framework. Ban user(s) from using commands.",
+  "main": "plugin.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Tennu/tennu-ban"
+  },
+  "scripts": {
+    "test": "mocha",
+    "postversion": "git push && git push --tags && npm publish"
+  },
+  "author": "Victorio Berra",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.2.1",
+    "lodash": "^4.0.0",
+    "moment": "^2.11.1"
+  },
+  "devDependencies": {
+    "mocha": "^2.3.4",
+    "should": "^8.1.1",
+    "tennu-admin": "^3.1.0"
+  }
+}
