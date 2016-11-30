@@ -6,7 +6,7 @@ function assertions(shouldContext){
     shouldContext.Assertion.add('banned', function() {
         this.params = {
             operator: 'to be banned'
-        }
+        };
         this.obj.should.have.property('intent').which.is.equal('notice');
         this.obj.should.have.property('query').which.is.equal(true);
     });
@@ -14,7 +14,7 @@ function assertions(shouldContext){
     shouldContext.Assertion.add('banobjectarray', function() {
         this.params = {
             operator: 'to be an array of banned objects'
-        }
+        };
         this.obj.should.be.Array();
         _.each(this.obj, function(item) {
             item.should.have.property('nickname');
@@ -27,7 +27,7 @@ function assertions(shouldContext){
     shouldContext.Assertion.add('containHostname', function(hostname) {
         this.params = {
             operator: 'to contain the hostmask'
-        }
+        };
         var hits = _.filter(this.obj, function(bannedItem){
             var matcher = new RegExp(bannedItem.hostname);
             //console.log('Does ' + hostname + ' match ' + matcher.toString() + ' : ' + matcher.test(hostname) );
@@ -36,10 +36,10 @@ function assertions(shouldContext){
         hits.should.have.length(1);
     });
     
-    shouldContext.Assertion.add('tempban', function(target) {
+    shouldContext.Assertion.add('tempban', function() {
         this.params = {
             operator: 'to be a tempban object'
-        }
+        };
         _.each(this.obj, function(item) {
             item.should.have.property('timestamp');
             item.should.have.property('duration');

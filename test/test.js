@@ -1,8 +1,6 @@
 var should = require('should');
-var moment = require("moment");
 require('./assertions')(should);
 var Promise = require('bluebird');
-var _ = require('lodash');
 
 var mockClient = require('./mock-client');
 var mockImports = require('./mock-imports');
@@ -12,23 +10,23 @@ var plugin = require('../plugin').init(mockClient, mockImports);
 var pluginExports = plugin.exports;
 
 var bannedUser = {
-    nickname: "test123",
-    hostname: "a.b.c"
+    nickname: 'test123',
+    hostname: 'a.b.c'
 };
 
 var nonBannedUser = {
-    nickname: "test456",
-    hostname: "d.f.g"
+    nickname: 'test456',
+    hostname: 'd.f.g'
 };
 
 var adminUser = {
-    nickname: "test789",
-    hostname: "h.i.j"
+    nickname: 'test789',
+    hostname: 'h.i.j'
 };
 
 var tempBannedUser = {
-    nickname: "test101112",
-    hostname: "k.l.m"
+    nickname: 'test101112',
+    hostname: 'k.l.m'
 };
 
 describe('tennu-ban', function() {
@@ -62,15 +60,16 @@ describe('tennu-ban', function() {
         });
         it('Should allow a temp banned user from running a command after expire', function(done) {
             var command = mockCommandBuilder('!sayr', tempBannedUser);
-            Promise.delay(150).then(function() {
-                return plugin.commandMiddleware(command);
-            })
-            .then(function(result) {
-                result.should.be.equal(command);
-            })
-            .then(function() {
-                done();
-            });
+            Promise.delay(150)
+                .then(function() {
+                    return plugin.commandMiddleware(command);
+                })
+                .then(function(result) {
+                    result.should.be.equal(command);
+                })
+                .then(function() {
+                    done();
+                });
         });
         it('Should allow admins through', function(done) {
             var command = mockCommandBuilder('!sayr', adminUser);
@@ -89,8 +88,9 @@ describe('tennu-ban', function() {
                 pluginExports.getBanned().should.containHostname(bannedUsers[0].hostname);
             });
             it('Should throw on adding duplicate bans', function(done) {
-                Promise.try(function() {
-                        pluginExports.addBans('banned.host.1');;
+                Promise
+                    .try(function() {
+                        pluginExports.addBans('banned.host.1');
                     })
                     .catch(function(err) {
                         err.should.Error('host(s) already banned.');
@@ -142,8 +142,9 @@ describe('tennu-ban', function() {
                 pluginExports.isExpired(bannedUsers[0]).should.be.equal('in 20 minutes');
             });
             it('Should throw on hostname not a tempban', function(done) {
-                Promise.try(function() {
-                        pluginExports.addBans('banned.host.1');;
+                Promise
+                    .try(function() {
+                        pluginExports.addBans('banned.host.1');
                     })
                     .catch(function(err) {
                         err.should.Error('Located ban is not a temp ban.');

@@ -8,6 +8,7 @@
     "url": "https://github.com/Tennu/tennu-ban"
   },
   "scripts": {
+    "eslint": "eslint .",
     "test": "mocha",
     "postversion": "git push && git push --tags && npm publish"
   },
@@ -19,6 +20,7 @@
     "moment": "^2.11.1"
   },
   "devDependencies": {
+    "eslint": "^3.11.1",
     "mocha": "^2.3.4",
     "should": "^8.1.1",
     "tennu-admin": "^3.1.0"
