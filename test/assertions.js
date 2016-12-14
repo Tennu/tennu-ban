@@ -5,7 +5,7 @@ function assertions(shouldContext){
 
     shouldContext.Assertion.add('banned', function() {
         this.params = {
-            operator: 'to be banned'
+            operator: 'to be banned notice'
         };
         this.obj.should.have.property('intent').which.is.equal('notice');
         this.obj.should.have.property('query').which.is.equal(true);

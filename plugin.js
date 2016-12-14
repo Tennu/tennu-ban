@@ -1,24 +1,29 @@
 var format = require('util').format;
 
-var defaultDeniedResponse = {
-    intent: 'notice',
-    query: true,
-    message: 'Permission denied, you are banned from running bot commands.'
-};
-
 var TennuBan = {
+    name: 'ban',
+    role: 'ban',
     requiresRoles: ['admin'],
+    configDefaults: {
+        'ban': {
+            'denied-response': {
+                intent: 'notice',
+                query: true,
+                message: 'Permission denied, you are banned from running bot commands.'
+            }
+        }
+    },
     init: function(client, imports) {
 
-        var banConfig = client.config('banned');
+        var banConfig = client.config('ban');
 
-        var deniedResponse = (client.config('banned-attempt-response') || defaultDeniedResponse);
+        var deniedResponse = banConfig['denied-response'];
 
-        var ban = require('./lib/ban')(imports.admin.initalizeAdmins(banConfig), imports.admin.initalizeAdmins);
+        var ban = require('./lib/ban')(imports.admin.initalizeAdmins(client.config('banned')), imports.admin.initalizeAdmins);
 
         return {
             commandMiddleware: function(command) {
-                
+
                 // Admin override
                 return imports.admin.isAdmin(command.hostmask)
                     .then(function(isAdmin) {
@@ -29,7 +34,7 @@ var TennuBan = {
                         // Banned check
                         return imports.admin.isAdmin(command.hostmask, ban.banned)
                             .then(function(isBanned) {
-                                
+
                                 if (!isBanned) {
                                     return command; // not banned
                                 }
@@ -40,14 +45,8 @@ var TennuBan = {
                                 }
 
                                 // Temp ban check
-                                if (bannedUser.hasOwnProperty('duration')) {
-                                    var expireTimeLeft = ban.isExpired(bannedUser);
-                                    if (expireTimeLeft) {
-                                        client.notice(command.nickname, expireTimeLeft);
-                                    }
-                                    else {
-                                        return command;
-                                    }
+                                if (bannedUser.hasOwnProperty('expires') && !ban.isExpired(bannedUser)) {
+                                    return command;
                                 }
 
                                 client.note('PluginAdmin', format('banned user "%s" tried to run command "%s"', command.nickname, command.command));

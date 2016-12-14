@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var should = require('should');
 require('./assertions')(should);
 var Promise = require('bluebird');
@@ -6,7 +7,10 @@ var mockClient = require('./mock-client');
 var mockImports = require('./mock-imports');
 var mockCommandBuilder = require('./mock-command-builder');
 
-var plugin = require('../plugin').init(mockClient, mockImports);
+var plugin = require('../plugin')
+mockClient.updateConfig(plugin.configDefaults);
+plugin = plugin.init(mockClient, mockImports);
+
 var pluginExports = plugin.exports;
 
 var bannedUser = {

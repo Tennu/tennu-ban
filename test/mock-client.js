@@ -7,19 +7,25 @@ var logger = {
     'error': _.noop
 };
 
+var configurationObject = {
+    'banned': [{
+        'hostname': 'a.b.c'
+    }],
+    'admins': [{
+        'hostname': 'h.i.j'
+    }],
+};
+
 function config(value) {
-    var cfg = {
-        'banned': [{
-            'hostname': 'a.b.c'
-        }],
-        'admins': [{
-            'hostname': 'h.i.j'
-        }],
-    };
-    return cfg[value];
+    return configurationObject[value];
+}
+
+function updateConfig(defaultConfig){
+    configurationObject = _.assign({}, defaultConfig, configurationObject);
 }
 
 var exportObject = {
+    'updateConfig': updateConfig,
     'config': config,
     '_logger': logger
 };
