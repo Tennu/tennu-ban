@@ -32,7 +32,9 @@ var TennuBan = {
                         }
 
                         // Banned check
-                        return imports.admin.isAdmin(command.hostmask, ban.banned)
+                        return imports.admin.isAdmin(command.hostmask, {
+                                customAdmins: ban.banned
+                            })
                             .then(function(isBanned) {
 
                                 if (!isBanned) {
