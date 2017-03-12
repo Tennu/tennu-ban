@@ -87,18 +87,37 @@ describe('tennu-ban', function() {
     describe('exports', function() {
         describe('#addBans()', function() {
             it('Should add and return a new banned user', function() {
-                var bannedUsers = pluginExports.addBans({
-                    hostname: 'banned.host.1'
-                });
+                var bannedUsers = pluginExports.addBans('banned.host.1');
                 should(bannedUsers).be.a.banobjectarray();
                 pluginExports.getBanned().should.containHostname(bannedUsers[0].hostname);
+            });
+            it('Should throw on adding duplicate bans', function(done) {
+                Promise
+                    .try(function() {
+                        pluginExports.addBans('banned.host.1');
+                    })
+                    .catch(function(err) {
+                        err.should.Error('host(s) already banned.');
+                    })
+                    .then(function() {
+                        done();
+                    });
+            });
+            it('Should add multiple bans and return banned those new banned users', function() {
+                var bannedUsers = ['banned.host.2', 'banned.host.3'];
+
+                var addedBannedUsers = pluginExports.addBans(bannedUsers);
+
+                addedBannedUsers.should.be.a.banobjectarray();
+
+                // getBanned has them?
+                pluginExports.getBanned().should.containHostname(bannedUsers[0]);
+                pluginExports.getBanned().should.containHostname(bannedUsers[1]);
             });
         });
         describe('#addTempBans()', function() {
             it('Should add and return a new temp banned user', function() {
-                var bannedUsers = pluginExports.addTempBans({
-                    hostname: 'banned.host.4'
-                }, 2, 'm');
+                var bannedUsers = pluginExports.addTempBans('banned.host.4', 2, 'm');
                 should(bannedUsers).be.a.banobjectarray();
                 pluginExports.getBanned().should.containHostname(bannedUsers[0].hostname);
                 bannedUsers.should.be.a.tempban();

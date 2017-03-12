@@ -19,7 +19,7 @@ var TennuBan = {
 
         var deniedResponse = banConfig['denied-response'];
 
-        var ban = require('./lib/ban')(imports.admin.initalizeAdmins(client.config('banned')), imports.admin.initalizeAdmins);
+        var ban = require('./lib/ban')(imports.admin.initalizeAdmins(client.config('banned')), imports.admin.initalizeAdmins, imports.admin.isAdmin);
 
         return {
             commandMiddleware: function(command) {

@@ -2,9 +2,9 @@
 
 > A middleware plugin for the [tennu](https://github.com/Tennu/tennu) irc framework.
 
-Allows banning a user from using any commands.
+Allows banning a user from using any commands. Uses the users hostname as the source of truth.
 
-Make sure to get the latest possible version of dbcore.
+Make sure to get the latest possible version of tennu-admin.
 
 ### Related
 - [tennu-admin](https://github.com/Tennu/tennu-admin/)
